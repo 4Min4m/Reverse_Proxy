@@ -1,0 +1,48 @@
+A step-by-step guide to configure Nginx as a reverse proxy 👇
+
+👣 Step 1: Install Nginx on Ubuntu
+
+sudo apt update
+sudo apt install nginx
+
+👣 Step 2: Start Nginx
+
+sudo systemctl start nginx
+
+👣 Step 3: Verify Nginx's status
+
+sudo systemctl status nginx
+
+👣 Step 4: Create a backup of the default Nginx configuration
+
+sudo cp /etc/nginx/sites-available/default /etc/nginx/sites-available/default.backup
+
+👣 Step 5: Open the Nginx default configuration file in a text editor (e.g., nano)
+
+sudo nano /etc/nginx/sites-available/default
+
+👣 Step 6: Inside the server block, comment out any existing configs & add d following lines to set up d reverse proxy:
+
+location / {
+proxy_pass http://ur_upstream_server_ip:ur_upstream_server_port;
+proxy_set_header Host $host;
+proxy_set_header X-Real-IP $remote_addr;
+}
+
+👣 Step 7: Save and close the configuration file (in nano, press Ctrl+O, then Ctrl+X).
+
+👣 Step 8: Create a symbolic link to enable the configuration
+
+sudo ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/
+
+👣 Step 9: Test Nginx configuration
+
+sudo nginx -t
+
+👣 Step 10: If the test is successful, reload Nginx to apply the changes
+
+sudo systemctl reload nginx
+
+🌐That's it! Nginx is now configured as a reverse proxy on your Ubuntu server.
+
+🚨Make sure to replace your_upstream_server_ip and your_upstream_server_port with the IP address and port of your backend server.
